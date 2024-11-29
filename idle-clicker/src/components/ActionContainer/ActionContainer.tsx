@@ -5,11 +5,13 @@ import styles from "./ActionContainer.module.css";
 interface ActionsContainerProps {
   resources: Resources;
   setResources: React.Dispatch<React.SetStateAction<Resources>>;
+  contratarComerciante: () => void; 
 }
 
 export default function ActionsContainer({
   resources,
   setResources,
+  contratarComerciante, 
 }: ActionsContainerProps) {
   const actions: Actions = {
     chopWood: {
@@ -44,18 +46,28 @@ export default function ActionsContainer({
         { resourceType: ResourceType.worker, amount: +1, production: 0 },
       ],
     },
+    hireMerchant: {
+      name: "Contratar Comerciante",
+      icon: "🛒",
+      trades: [
+        { resourceType: ResourceType.coin, amount: -50, production: 0 },
+        { resourceType: ResourceType.merchant, amount: +1, production: 0 },
+      ],
+    },
   };
 
   return (
     <section className={styles.container}>
       <div className={styles.group}>
         {Object.entries(actions).map(([actionType, action]) => (
-          <ActionButton
-            key={actionType}
-            action={action}
-            resources={resources}
-            setResources={setResources}
-          />
+          <div key={actionType} className={styles.card}>
+            <ActionButton
+              action={action}
+              resources={resources}
+              setResources={setResources}
+              onSpecialAction={actionType === "hireMerchant" ? contratarComerciante : undefined}
+            />
+          </div>
         ))}
       </div>
     </section>

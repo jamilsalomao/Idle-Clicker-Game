@@ -5,31 +5,38 @@ interface ActionButtonProps {
   action: Action;
   resources: Resources;
   setResources: React.Dispatch<React.SetStateAction<Resources>>;
+  onSpecialAction?: () => void; 
 }
 
-export default function ActionButton({ 
+export default function ActionButton({
   action,
   resources,
   setResources,
- }: ActionButtonProps) {
+  onSpecialAction,
+}: ActionButtonProps) {
   const performTrade = () => {
+    if (onSpecialAction) {
+      onSpecialAction();
+      return;
+    }
+
     let tradeIsPossible = true;
     const updatedResources = { ...resources };
-  
+
     action.trades.forEach(({ resourceType, amount, production }) => {
       const resource = { ...updatedResources[resourceType] };
-  
+
       const newAmount = resource.amount + amount;
       const newProduction = resource.production + production;
-  
+
       tradeIsPossible = tradeIsPossible && newAmount >= 0;
       tradeIsPossible = tradeIsPossible && newProduction >= 0;
-  
+
       resource.amount = newAmount;
       resource.production = newProduction;
       updatedResources[resourceType] = resource;
     });
-  
+
     if (tradeIsPossible) setResources(updatedResources);
   };
 
@@ -49,7 +56,7 @@ export default function ActionButton({
       <button className={styles.button} onClick={performTrade}>
         <span className={styles.icon}>{action.icon}</span>
       </button>
-      <ul className={styles.trades}>{listItems}</ul> 
-      </div>
+      <ul className={styles.trades}>{listItems}</ul>
+    </div>
   );
- }
+}

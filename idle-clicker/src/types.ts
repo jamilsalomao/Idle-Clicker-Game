@@ -3,6 +3,7 @@ export enum ResourceType {
   coin = "coin",
   house = "house",
   worker = "worker",
+  merchant = "merchant",
 }
 
 export interface Resource {
@@ -24,6 +25,7 @@ export interface Resource {
     sellWood = "sellWood",
     buildHouse = "buildHouse",
     hireWorker = "hireWorker",
+    hireMerchant = "hireMerchant",
   }
 
   export interface Action {
