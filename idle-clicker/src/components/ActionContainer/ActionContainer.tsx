@@ -5,13 +5,20 @@ import styles from "./ActionContainer.module.css";
 interface ActionsContainerProps {
   resources: Resources;
   setResources: React.Dispatch<React.SetStateAction<Resources>>;
-  contratarComerciante: () => void; 
+  contratarComerciante: () => void;
+  contratarMinerador: () => void;
+  contratarWorker: () => void;
+  construirPedreira: () => void; // Adicionando a função de contratar trabalhador
 }
+
 
 export default function ActionsContainer({
   resources,
   setResources,
-  contratarComerciante, 
+  contratarComerciante,
+  contratarMinerador,
+  contratarWorker,
+  construirPedreira,
 }: ActionsContainerProps) {
   const actions: Actions = {
     chopWood: {
@@ -38,9 +45,8 @@ export default function ActionsContainer({
     },
     hireWorker: {
       name: "Contratar Trabalhador",
-      icon: "🧾",
+      icon: "👷",
       trades: [
-        { resourceType: ResourceType.wood, amount: 0, production: 1 },
         { resourceType: ResourceType.coin, amount: -10, production: 0 },
         { resourceType: ResourceType.house, amount: -1, production: 0 },
         { resourceType: ResourceType.worker, amount: +1, production: 0 },
@@ -54,6 +60,23 @@ export default function ActionsContainer({
         { resourceType: ResourceType.merchant, amount: +1, production: 0 },
       ],
     },
+    hireMiner: {
+      name: "Contratar Minerador",
+      icon: "⛏️",
+      trades: [
+        { resourceType: ResourceType.coin, amount: -15, production: 0 },
+        { resourceType: ResourceType.house, amount: -1, production: 0 },
+      ],
+    },
+    construirPedreira: {
+      name: "Construir Pedreira",
+      icon: "⛰️",
+      trades: [
+        { resourceType: ResourceType.coin, amount: -30, production: 0 }, // Exemplo, pode ajustar conforme necessário
+        { resourceType: ResourceType.wood, amount: -10, production: 0 },
+        { resourceType: ResourceType.quarry, amount: +1, production: 0 },
+      ],
+    },
   };
 
   return (
@@ -65,7 +88,17 @@ export default function ActionsContainer({
               action={action}
               resources={resources}
               setResources={setResources}
-              onSpecialAction={actionType === "hireMerchant" ? contratarComerciante : undefined}
+              onSpecialAction={
+                actionType === "hireMerchant"
+                  ? contratarComerciante
+                  : actionType === "hireMiner"
+                  ? contratarMinerador
+                  : actionType === "hireWorker"
+                  ? contratarWorker
+                  : actionType === "construirPedreira"
+                  ? construirPedreira
+                  : undefined
+              }
             />
           </div>
         ))}

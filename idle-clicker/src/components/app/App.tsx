@@ -7,36 +7,43 @@ import { useEffect, useState } from "react";
 
 export default function App() {
   const [resources, setResources] = useState<Resources>({
-    wood: {
-      name: "Madeira",
-      icon: "🌳",
-      amount: 0,
-      production: 0,
-    },
-    coin: {
-      name: "Moeda",
-      icon: "🪙",
-      amount: 0,
-      production: 0,
-    },
-    house: {
-      name: "Casa",
-      icon: "🏠",
-      amount: 0,
-      production: 0,
-    },
-    worker: {
-      name: "Trabalhador",
-      icon: "👷",
-      amount: 0,
-      production: 0,
-    },
-    merchant: { 
-      name: "Comerciante", 
+    wood: { name: "Madeira", 
+      icon: "🌳", 
+      amount: 0, 
+      production: 0 },
+    coin: { name: "Moeda", 
+      icon: "🪙", 
+      amount: 0, 
+      production: 0 },
+    house: { name: "Casa", 
+      icon: "🏠", 
+      amount: 0, 
+      production: 0 },
+    worker: { name: "Trabalhador", 
+      icon: "👷", 
+      amount: 0, 
+      production: 0 },
+    merchant: { name: "Comerciante", 
       icon: "🛒", 
       amount: 0, 
       production: 0 },
+    miner: { name: "Minerador", 
+      icon: "⛏️", 
+      amount: 0, 
+      production: 0 }, 
+    stone: { name: "Pedra", 
+      icon: "🪨", 
+      amount: 0, 
+      production: 0 },
+    quarry: {  
+      name: "Pedreira",
+      icon: "⛰️", 
+      amount: 0,
+      production: 0, 
+      },
+      
   });
+  
 
   const [merchantSelling, setMerchantSelling] = useState(false);
 
@@ -49,29 +56,36 @@ export default function App() {
     };
   };
 
-  useEffect(() => {
-    const produceResources = () => {
-      setResources((resources: Resources) => {
-        const updatedResources: Resources = {
-          wood: {
-            ...resources.wood,
-            production: resources.worker.amount,  
-            amount: resources.wood.amount + resources.worker.amount, 
-          },
-          coin: produceResource(resources.coin),
-          house: produceResource(resources.house),
-          worker: produceResource(resources.worker),
-          merchant: produceResource(resources.merchant),
-        };
-        return updatedResources;
-      });
-    };
+  const produceResources = () => {
+    setResources((resources: Resources) => {
+      const updatedResources: Resources = {
+        wood: {
+          ...resources.wood,
+          production: resources.worker.amount,
+          amount: resources.wood.amount + resources.worker.amount,
+        },
+        stone: {
+          ...resources.stone,
+          production: resources.quarry.amount > 0 ? resources.worker.amount : 0, 
+          amount: resources.stone.amount + (resources.quarry.amount > 0 ? resources.worker.amount : 0),
+        },
+        coin: produceResource(resources.coin),
+        house: produceResource(resources.house),
+        worker: produceResource(resources.worker),
+        merchant: produceResource(resources.merchant),
+        miner: produceResource(resources.miner),
+        quarry: resources.quarry, 
+      };
+      return updatedResources;
+    });
+  };
   
+  
+
+  useEffect(() => {
     const interval = setInterval(produceResources, 1000);
     return () => clearInterval(interval);
-  }, [resources.worker.amount]);
-  
-  
+  },);
 
   const contratarComerciante = () => {
     if (resources.coin.amount >= 50) {
@@ -83,7 +97,44 @@ export default function App() {
     }
   };
 
+  const construirPedreira = () => {
+    if (resources.coin.amount >= 20 && resources.wood.amount >= 10) {
+      setResources((prev) => ({
+        ...prev,
+        coin: { ...prev.coin, amount: prev.coin.amount - 20 },
+        wood: { ...prev.wood, amount: prev.wood.amount - 10 },
+        quarry: { ...prev.quarry, amount: prev.quarry.amount + 1 }, 
+      }));
+    }
+  };
   
+
+  const contratarMinerador = () => {
+    if (resources.coin.amount >= 15 && resources.house.amount >= 1) {
+      setResources((prev) => ({
+        ...prev,
+        coin: { ...prev.coin, amount: prev.coin.amount - 15 },
+        house: { ...prev.house, amount: prev.house.amount - 1 },
+        miner: { ...prev.miner, amount: prev.miner.amount + 1 }, 
+      }));
+    } else if (resources.quarry.amount === 0){
+      alert("Você precisa de uma pedreira para contratar mineradores!");
+    }
+  };
+
+
+
+  const contratarWorker = () => {
+    if (resources.coin.amount >= 10 && resources.house.amount >= 1) {
+      setResources((prev) => ({
+        ...prev,
+        coin: { ...prev.coin, amount: prev.coin.amount - 10 },
+        house: { ...prev.house, amount: prev.house.amount - 1 },
+        worker: { ...prev.worker, amount: prev.worker.amount + 1 },
+      }));
+    }
+  };
+
   useEffect(() => {
     if (resources.merchant.amount > 0) {
       setMerchantSelling(true);
@@ -97,25 +148,26 @@ export default function App() {
           const woodSold = resources.merchant.amount;
           setResources((prevResources) => ({
             ...prevResources,
-            wood: { ...prevResources.wood, amount: prevResources.wood.amount - woodSold},
+            wood: { ...prevResources.wood, amount: prevResources.wood.amount - woodSold },
             coin: { ...prevResources.coin, amount: prevResources.coin.amount + woodSold },
           }));
         }
       }, 1000); 
       return () => clearInterval(interval);
     }
-  },  [merchantSelling, resources.wood.amount, resources.coin.amount, resources.merchant.amount]);
-
-
+  }, [merchantSelling, resources.wood.amount, resources.coin.amount, resources.merchant.amount]);
 
   return (
     <article className={styles.container}>
       <Header />
       <ResourcesContainer resources={resources} />
-      <ActionsContainer 
-        resources={resources} 
-        setResources={setResources}  
-        contratarComerciante={contratarComerciante} 
+      <ActionsContainer
+        resources={resources}
+        setResources={setResources}
+        contratarComerciante={contratarComerciante}
+        contratarMinerador={contratarMinerador}
+        contratarWorker={contratarWorker}
+        construirPedreira={construirPedreira}
       />
     </article>
   );

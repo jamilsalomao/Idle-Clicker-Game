@@ -24,7 +24,12 @@ export default function ActionButton({
     const updatedResources = { ...resources };
 
     action.trades.forEach(({ resourceType, amount, production }) => {
-      const resource = { ...updatedResources[resourceType] };
+      const resource = updatedResources[resourceType];
+      if (!resource) {
+        console.error(`Recurso "${resourceType}" não encontrado em resources.`);
+        tradeIsPossible = false;
+        return;
+      }
 
       const newAmount = resource.amount + amount;
       const newProduction = resource.production + production;
@@ -42,8 +47,13 @@ export default function ActionButton({
 
   const listItems = action.trades.map(({ resourceType, amount }) => {
     const resource = resources[resourceType];
+    if (!resource) {
+      console.warn(`Recurso "${resourceType}" não encontrado em resources.`);
+      return null; 
+    }
+
     return (
-      <li key={resource.name}>
+      <li key={resourceType}>
         {amount > 0 ? "+" : ""}
         {amount} {resource.icon} {resource.name}
       </li>
