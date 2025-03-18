@@ -66,19 +66,24 @@ export default function App() {
         },
         stone: {
           ...resources.stone,
-          production: resources.quarry.amount > 0 ? resources.worker.amount : 0, 
-          amount: resources.stone.amount + (resources.quarry.amount > 0 ? resources.worker.amount : 0),
+          production: resources.quarry.amount > 0 ? resources.miner.amount : 0,
+          amount: resources.stone.amount + (resources.quarry.amount > 0 ? resources.miner.amount : 0),
         },
-        coin: produceResource(resources.coin),
+        coin: {
+          ...resources.coin,
+          production: resources.merchant.amount,
+          amount: resources.coin.amount + resources.merchant.amount,
+        },
         house: produceResource(resources.house),
         worker: produceResource(resources.worker),
         merchant: produceResource(resources.merchant),
         miner: produceResource(resources.miner),
-        quarry: resources.quarry, 
+        quarry: resources.quarry,
       };
       return updatedResources;
     });
   };
+  
   
   
 
