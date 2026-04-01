@@ -5,19 +5,21 @@ interface ActionButtonProps {
   action: Action;
   resources: Resources;
   setResources: React.Dispatch<React.SetStateAction<Resources>>;
-  onSpecialAction?: () => void; 
 }
 
 export default function ActionButton({
   action,
   resources,
   setResources,
-  onSpecialAction,
 }: ActionButtonProps) {
   const performTrade = () => {
-    if (onSpecialAction) {
-      onSpecialAction();
-      return;
+    if (action.requires) {
+      for (const req of action.requires) {
+        if ((resources[req.resourceType]?.amount || 0) < req.amount) {
+          alert(req.errorMessage);
+          return;
+        }
+      }
     }
 
     let tradeIsPossible = true;

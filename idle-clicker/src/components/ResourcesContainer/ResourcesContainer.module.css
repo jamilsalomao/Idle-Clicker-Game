@@ -1,20 +1,16 @@
 .container {
     display: flex;
-    max-width: 100%;
-    overflow-x: scroll;
+    justify-content: center;
+    width: 100%;
     padding-inline: 1rem;
     padding-block: 0.5rem;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  
-  .container::-webkit-scrollbar {
-    display: none;
   }
   
   .group {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 3rem;
+    gap: 2rem;
+    max-width: 1000px;
   }

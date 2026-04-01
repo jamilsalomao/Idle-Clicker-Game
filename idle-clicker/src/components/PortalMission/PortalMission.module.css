@@ -1,0 +1,128 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto 2rem auto;
+  background: linear-gradient(135deg, #1e1e40 0%, #291b40 100%);
+  color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.8em;
+  font-weight: bold;
+}
+
+.stardust {
+  font-size: 1.1em;
+  color: #ffde59;
+  margin-top: 0.5rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.stageTitle {
+  margin: 0 0 0.5rem 0;
+  color: #d1b8fa;
+}
+
+.desc {
+  margin: 0 0 1rem 0;
+  font-style: italic;
+  color: #bfb0d3;
+  text-align: center;
+}
+
+.reqList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.reqList li {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  font-weight: bold;
+}
+
+.reqMissing {
+  color: #ff6b6b;
+  border: 1px solid #ff6b6b;
+}
+
+.reqMet {
+  color: #51cf66;
+  border: 1px solid #51cf66;
+}
+
+.actionBtn {
+  padding: 0.8rem 2rem;
+  font-size: 1.1em;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  background-color: #5c3fd6;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.actionBtn:hover:not(:disabled) {
+  background-color: #724cef;
+  transform: translateY(-2px);
+}
+
+.actionBtn:disabled {
+  background-color: #555;
+  color: #aaa;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.prestigeBtn {
+  background-color: #d63f82;
+  box-shadow: 0 0 15px rgba(214, 63, 130, 0.5);
+  animation: pulse 2s infinite;
+}
+
+.prestigeBtn:hover:not(:disabled) {
+  background-color: #eb448f;
+}
+
+.victory {
+  font-size: 1.2em;
+  color: #51cf66;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}

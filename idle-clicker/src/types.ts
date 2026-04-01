@@ -1,11 +1,19 @@
 export enum ResourceType {
   wood = "wood",
   coin = "coin",
+  stone = "stone",
+  copperOre = "copperOre",
+  ironOre = "ironOre",
+  copperBar = "copperBar",
+  ironBar = "ironBar",
   house = "house",
+  market = "market",
+  quarry = "quarry",
+  furnace = "furnace",
   worker = "worker",
   merchant = "merchant",
-  stone = "stone",
-  quarry = "quarry",
+  miner = "miner",
+  smelter = "smelter",
 }
 
 export interface Resource {
@@ -13,38 +21,17 @@ export interface Resource {
   icon: string;
   amount: number;
   production: number;
+  unlocked: boolean;
 }
 
-export interface Resources {
-  wood: Resource;
-  stone: Resource;
-  coin: Resource;
-  house: Resource;
-  worker: Resource;
-  merchant: Resource;
-  miner: Resource;
-  quarry: Resource; 
-}
-
-export interface Trade {
-  resourceType: ResourceType;
-  amount: number;
-  production: number;
-}
-
-export enum ActionType {
-  chopWood = "chopWood",
-  sellWood = "sellWood",
-  buildHouse = "buildHouse",
-  hireWorker = "hireWorker",
-  hireMerchant = "hireMerchant",
-  mineStone = "mineStone",
-}
+export type Resources = Record<ResourceType, Resource>;
 
 export interface Action {
   name: string;
   icon: string;
   trades: { resourceType: ResourceType; amount: number; production: number }[];
+  requires?: { resourceType: ResourceType; amount: number; errorMessage: string }[];
+  showIf?: (resources: Resources) => boolean;
 }
 
 export type Actions = {

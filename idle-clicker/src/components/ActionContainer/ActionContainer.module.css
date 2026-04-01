@@ -1,22 +1,18 @@
 .container {
     display: flex;
-    max-width: 100%;
-    overflow-x: scroll;
+    justify-content: center;
+    width: 100%;
     padding-inline: 1rem;
     padding-block: 0.5rem;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  
-  .container::-webkit-scrollbar {
-    display: none;
   }
   
   .group {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: stretch;
-    gap: 3rem;
+    gap: 1.5rem;
+    max-width: 1200px;
   }
 
   .card {

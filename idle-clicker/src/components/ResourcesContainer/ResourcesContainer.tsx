@@ -13,7 +13,9 @@ export default function ResourcesContainer({
   return (
     <section className={styles.container}>
       <div className={styles.group}>
-        {Object.entries(resources).map(([resourceType, resource]) => (
+        {Object.entries(resources)
+          .filter(([, resource]) => resource.unlocked)
+          .map(([resourceType, resource]) => (
           <ResourceDisplay key={resourceType} resource={resource} />
         ))}
       </div>
